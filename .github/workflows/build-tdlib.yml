@@ -1,0 +1,22 @@
+name: Build TDLib for Android
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: Get Telegram's official TDLib source
+        run: git clone https://github.com/tdlib/td.git
+
+      - name: Build TDLib for Android (Java interface)
+        working-directory: td/example/android
+        run: docker build --output tdlib .
+
+      - name: Save the result
+        uses: actions/upload-artifact@v4
+        with:
+          name: tdlib-android
+          path: td/example/android/tdlib
